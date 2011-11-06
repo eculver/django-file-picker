@@ -1,3 +1,4 @@
+from file_picker.settings import STATIC_URL
 from file_picker.widgets import FilePickerWidget
 
 
@@ -7,8 +8,8 @@ class WYMeditorWidget(FilePickerWidget):
         super(WYMeditorWidget, self).__init__(pickers, *args, **kwargs)
 
     class Media:
-        css = {"all": ("css/filepicker.overlay.css",)}
-        js = ("js/ajaxupload.js",
-              "js/jquery.filepicker.js",
-              "wymeditor/jquery.wymeditor.js",
-              "js/jquery.wymeditor.filepicker.js")
+        css = {"all": ("%s/css/filepicker.overlay.css" % STATIC_URL,)}
+        js = ("%s/wymeditor/jquery.wymeditor.js" % STATIC_URL,
+              "%s/js/ajaxupload.js" % STATIC_URL,
+              "%s/js/jquery.filepicker.js" % STATIC_URL,
+              "%s/js/jquery.wymeditor.filepicker.js" % STATIC_URL)
