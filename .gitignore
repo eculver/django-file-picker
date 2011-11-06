@@ -3,3 +3,5 @@
 sample_project/media
 _build
 *.egg-info*
+build/
+dist/
