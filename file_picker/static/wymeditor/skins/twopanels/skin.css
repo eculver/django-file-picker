@@ -49,7 +49,7 @@
 
 /*WYM_IFRAME*/
         .wym_skin_twopanels .wym_iframe             { width: 98%;}
-        .wym_skin_twopanels .wym_iframe iframe      { width: 100%; height: 200px; border: 1px solid gray; background: white }
+        .wym_skin_twopanels .wym_iframe iframe      { width: 100%; height: 500px; border: 1px solid gray; background: white }
 
 
 /*AREAS*/
@@ -108,12 +108,13 @@
         .wym_skin_twopanels .wym_buttons li.wym_tools_paste a         { background-position: 0 -552px;}
         .wym_skin_twopanels .wym_buttons li.wym_tools_html a          { background-position: 0 -193px;}
         .wym_skin_twopanels .wym_buttons li.wym_tools_preview a       { background-position: 0 -408px;}
+        .wym_skin_twopanels .wym_buttons li.wym_tools_file_add a      { background: url(../../../img/attach.png) no-repeat center center;}
 
 /*DECORATION*/
         .wym_skin_twopanels .wym_section h2             { background: #ddd; border: solid gray; border-width: 0 0 1px;}
         .wym_skin_twopanels .wym_section h2 span        { color: gray;}
         .wym_skin_twopanels .wym_panel                  { padding: 0; border: solid gray; border-width: 1px; background: white;}    
-        .wym_skin_twopanels .wym_panel ul               { margin: 2px 0 5px; }        
+        .wym_skin_twopanels .wym_panel ul               { margin: 2px 0 5px; padding-left: 10px; }
         .wym_skin_twopanels .wym_dropdown               { padding: 0; border: solid gray; border-width: 1px 1px 0 1px; }
         .wym_skin_twopanels .wym_dropdown ul            { border: solid gray; border-width: 0 1px 1px 1px; margin-left: -1px; padding: 5px 10px 5px 3px;}
         
