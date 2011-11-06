@@ -71,7 +71,7 @@ WYMeditor.editor.prototype.filepicker = function(options) {
             );
         }
     }
-    
+
     // extract file picker names from element and get URLs via JSON
     var picker_names = get_file_picker_types($element);
     if (picker_names) {
@@ -83,10 +83,12 @@ WYMeditor.editor.prototype.filepicker = function(options) {
     }
 };
 
-jQuery(function() {
+$(document).ready(function() {
     $('textarea.wymeditor').each(function(idx, el) {
         $(el).wymeditor({
             updateSelector: 'input:submit',
+            skin: 'twopanels',
+            stylesheet: '/static/css/wymeditor-custom.css',
             updateEvent: 'click',
             postInit: function(wym) {
                 wym.filepicker();
