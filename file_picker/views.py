@@ -4,6 +4,8 @@ import traceback
 import tempfile
 import datetime
 
+import file_picker.settings
+
 from django.db import models
 from django.db.models import Q
 from django.utils import simplejson as json
@@ -14,11 +16,10 @@ from django.core.urlresolvers import reverse
 from django.core.files.uploadedfile import UploadedFile
 from django.views.decorators.csrf import csrf_exempt
 
-from sorl.thumbnail.main import DjangoThumbnail
-from sorl.thumbnail.base import ThumbnailException
-
+from sorl.thumbnail import get_thumbnail
+from sorl.thumbnail.helpers import ThumbnailError
 from file_picker.forms import QueryForm, model_to_AjaxItemForm
-
+from file_picker.utils import render_file
 
 logger = logging.getLogger('filepicker.views')
 
@@ -174,20 +175,23 @@ class FilePickerBase(object):
 
 class ImagePickerBase(FilePickerBase):
     link_headers = ['Thumbnail',]
-    
+
     def append(self, obj):
         json = super(ImagePickerBase, self).append(obj)
-        img = '<img src="{0}" alt="{1}" width="{2}" height="{3}" />'
+        instance = getattr(obj, self.field)
+
         try:
-            thumb = DjangoThumbnail(getattr(obj, self.field), (150, 150))
-        except ThumbnailException, e:
+            thumb = get_thumbnail(instance, "150x150")
+        except ThumbnailError, e:
             logger.exception(e)
             thumb = None
+
         if thumb:
-            json['link_content'] = [img.format(thumb.absolute_url, 'image',
-                                    thumb.width(), thumb.height(),),]
-            json['insert'] = ['<img src="%s" />' % getattr(obj, self.field).url,]
+            image_formatted = [render_file(thumb),]
+            json['link_content'] = image_formatted
+            json['insert'] = image_formatted
         else:
-            json['link_content'] = [img.format('', 'Not Found', 150, 150),]
-            json['insert'] = [img.format('', 'Not Found', 150, 150),]
+            json['link_content'] = [settings.NOT_FOUND_STRING,]
+            json['insert'] = [settings.NOT_FOUND_STRING,]
+
         return json

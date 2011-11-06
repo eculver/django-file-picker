@@ -1,17 +1,18 @@
-import os
-import datetime
+import os, datetime, mimetypes
 
 from django.db import models
 from django.contrib.auth.models import User
 
+from file_picker.parse import parse_types
 
 class BaseFileModel(models.Model):
     """ Base file model with meta fields """
 
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    file_size = models.PositiveIntegerField(null=True, blank=True)
-    file_type = models.CharField(max_length=16, blank=True)
+    file_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    file_type = models.CharField(editable=False, max_length=16, blank=True)
+    file_subtype = models.CharField(editable=False, max_length=16, blank=True)
     date_created = models.DateTimeField()
     date_modified = models.DateTimeField()
     created_by = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_created",
@@ -29,13 +30,16 @@ class BaseFileModel(models.Model):
         if not self.pk:
             self.date_created = now
         self.date_modified = now
-        # file info
+
+        # file size
         try:
             self.file_size = self.file.size
         except OSError:
             pass
-        path, ext = os.path.splitext(self.file.name)
-        self.file_type = ext.lstrip('.').upper()
+
+        # file types from mimetype
+        [self.file_type, self.file_subtype] = parse_types(self.file.path)
+
         return super(BaseFileModel, self).save(**kwargs)
 
     def __unicode__(self):
