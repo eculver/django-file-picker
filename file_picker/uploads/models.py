@@ -13,8 +13,8 @@ class BaseFileModel(models.Model):
     file_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
     file_type = models.CharField(editable=False, max_length=16, blank=True)
     file_subtype = models.CharField(editable=False, max_length=16, blank=True)
-    date_created = models.DateTimeField()
-    date_modified = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_created",
                                    null=True, blank=True)
     modified_by = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_modified",
