@@ -87,6 +87,8 @@ $(document).ready(function() {
     $('textarea.wymeditor').each(function(idx, el) {
         $(el).wymeditor({
             updateSelector: 'input:submit',
+            basePath: 'http://dev.ufogrid.com/static/wymeditor/',
+            skinPath: 'http://dev.ufogrid.com/static/wymeditor/skins/twopanels',
             skin: 'twopanels',
             stylesheet: '/static/css/wymeditor-custom.css',
             updateEvent: 'click',
