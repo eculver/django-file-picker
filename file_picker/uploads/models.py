@@ -1,18 +1,16 @@
 import os, datetime, mimetypes
 
 from django.db import models
+from django.forms import ValidationError
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
 from file_picker.parse import parse_types
 
-class BaseFileModel(models.Model):
-    """ Base file model with meta fields """
 
+class BaseMetaModel(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    file_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
-    file_type = models.CharField(editable=False, max_length=16, blank=True)
-    file_subtype = models.CharField(editable=False, max_length=16, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_created",
@@ -24,13 +22,19 @@ class BaseFileModel(models.Model):
         abstract = True
         ordering = ('-date_modified',)
 
-    def save(self, **kwargs):
-        # dates
-        now = datetime.datetime.now()
-        if not self.pk:
-            self.date_created = now
-        self.date_modified = now
+    def __unicode__(self):
+        return self.name
 
+
+class BaseFileModel(BaseMetaModel):
+    file_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    file_type = models.CharField(editable=False, max_length=16, blank=True)
+    file_subtype = models.CharField(editable=False, max_length=16, blank=True)
+
+    class Meta:
+        abstract = True
+
+    def save(self, **kwargs):
         # file size
         try:
             self.file_size = self.file.size
@@ -42,16 +46,62 @@ class BaseFileModel(models.Model):
 
         return super(BaseFileModel, self).save(**kwargs)
 
-    def __unicode__(self):
-        return self.name
-
 
 class File(BaseFileModel):
-    """ Basic file field model """
+    "Basic file model"
     file = models.FileField(upload_to='uploads/files/')
 
 
 class Image(BaseFileModel):
-    """ Basic image field model """
+    "Basic image model"
     file = models.ImageField(upload_to='uploads/images/')
 
+
+class Audio(BaseMetaModel):
+    "Basic audio model. Includes both AAC and OGG references for best HTML5 playback potential"
+    aac_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    ogg_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    aac = models.FileField(upload_to='uploads/audio/aac/', null=False, blank=False, verbose_name="AAC or MP3 encoded audio file", help_text=_("Must be encoded in AAC or MP3 to play back correctly"))
+    ogg = models.FileField(upload_to='uploads/audio/ogg/', null=False, blank=False, verbose_name="Ogg theora encoded audio file", help_text=_("Must be encoded in Ogg Theora to play back correctly"))
+    poster = models.ForeignKey(Image)
+    is_podcast = models.BooleanField(default=False, blank=False)
+
+    def save(self, *args, **kwargs):
+        # file size
+        if self.aac and self.ogg:
+            try:
+                self.aac_size = self.aac.size
+                self.ogg_size = self.ogg.size
+            except OSError:
+                pass
+
+        # make sure that both formats were specified or a video_url was provided"
+        if self.aac and self.ogg:
+            super(Audio, self).save(*args, **kwargs)
+        else:
+            raise ValidationError("You must upload both audio types")
+
+
+class Video(BaseMetaModel):
+    "Basic video model. Includes both H.264 and OGG references for best HTML5 playback potential"
+    h264_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    ogg_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    h264 = models.FileField(upload_to='uploads/videos/h264/', null=True, blank=True, verbose_name="H.264 encoded video", help_text=_("Must be encoded in H.264 to play back correctly"))
+    ogg = models.FileField(upload_to='uploads/videos/ogg/', null=True, blank=True, verbose_name="Ogg theora encoded video", help_text=_("Must be encoded in Ogg Theora to play back correctly"))
+    youtube_url = models.CharField(max_length=100, null=True, blank=True, verbose_name="YouTube URL", help_text=_("The full YouTube URL. Ex. http://www.youtube.com/watch?v=cmVLYaxHnPA"))
+    poster = models.ForeignKey(Image)
+
+    def save(self, *args, **kwargs):
+        # file size
+        if self.h264 and self.ogg:
+            try:
+                self.h264_size = self.h264.size
+                self.ogg_size = self.ogg.size
+            except OSError:
+                pass
+
+        # make sure that both formats were specified or a video_url was provided"
+        if (self.h264 and self.ogg) or self.youtube_url:
+            super(Video, self).save(*args, **kwargs)
+        else:
+            raise ValidationError("You must upload both video types (H.264 & Ogg) or provide a video_url")
