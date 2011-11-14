@@ -5,7 +5,7 @@ from django import template
 from file_picker.parse import parse_types
 from file_picker.settings import NOT_FOUND_STRING, MEDIA_URL
 
-def render_file(file, template_path="file_picker/render/", **options):
+def render_upload(file, template_path="file_picker/render/", **options):
     """
     Render a single ``File`` or ``Image`` model instance using the
     appropriate rendering template and the given keyword options, and

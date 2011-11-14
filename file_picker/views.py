@@ -19,7 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from sorl.thumbnail import get_thumbnail
 from sorl.thumbnail.helpers import ThumbnailError
 from file_picker.forms import QueryForm, model_to_AjaxItemForm
-from file_picker.utils import render_file
+from file_picker.utils import render_upload
 
 logger = logging.getLogger('filepicker.views')
 
@@ -187,7 +187,7 @@ class ImagePickerBase(FilePickerBase):
             thumb = None
 
         if thumb:
-            image_formatted = [render_file(thumb),]
+            image_formatted = [render_upload(thumb),]
             json['link_content'] = image_formatted
             json['insert'] = image_formatted
         else:
