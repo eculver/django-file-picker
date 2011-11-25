@@ -58,50 +58,56 @@ class Image(BaseFileModel):
 
 
 class Audio(BaseMetaModel):
-    "Basic audio model. Includes both AAC and OGG references for best HTML5 playback potential"
-    aac_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    "Basic audio model. Includes AAC, OGG and WEBM references for best HTML5 playback potential"
+    mp3_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
     ogg_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
-    aac = models.FileField(upload_to='uploads/audio/aac/', null=False, blank=False, verbose_name="AAC or MP3 encoded audio file", help_text=_("Must be encoded in AAC or MP3 to play back correctly"))
-    ogg = models.FileField(upload_to='uploads/audio/ogg/', null=False, blank=False, verbose_name="Ogg theora encoded audio file", help_text=_("Must be encoded in Ogg Theora to play back correctly"))
+    webm_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    mp3 = models.FileField(upload_to='uploads/audio/mp3/', null=False, blank=False, verbose_name="MP3 encoded audio file", help_text=_("Must be encoded as MP3 to play back correctly"))
+    ogg = models.FileField(upload_to='uploads/audio/ogg/', null=False, blank=False, verbose_name="Ogg theora encoded audio file", help_text=_("Must be encoded as Ogg Theora to play back correctly"))
+    webm = models.FileField(upload_to='uploads/audio/webm/', null=False, blank=False, verbose_name="WEBM encoded audio file", help_text=_("Must be encoded as WebM to play back correctly"))
     poster = models.ForeignKey(Image)
     is_podcast = models.BooleanField(default=False, blank=False)
 
     def save(self, *args, **kwargs):
         # file size
-        if self.aac and self.ogg:
+        if self.mp3 and self.ogg and self.webm:
             try:
-                self.aac_size = self.aac.size
+                self.mp3_size = self.mp3.size
                 self.ogg_size = self.ogg.size
+                self.webm_size = self.webm.size
             except OSError:
                 pass
 
         # make sure that both formats were specified or a video_url was provided"
-        if self.aac and self.ogg:
+        if self.mp3 and self.ogg and self.webm:
             super(Audio, self).save(*args, **kwargs)
         else:
-            raise ValidationError("You must upload both audio types")
+            raise ValidationError("You must upload all audio types")
 
 
 class Video(BaseMetaModel):
     "Basic video model. Includes both H.264 and OGG references for best HTML5 playback potential"
     h264_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
     ogg_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
-    h264 = models.FileField(upload_to='uploads/videos/h264/', null=True, blank=True, verbose_name="H.264 encoded video", help_text=_("Must be encoded in H.264 to play back correctly"))
-    ogg = models.FileField(upload_to='uploads/videos/ogg/', null=True, blank=True, verbose_name="Ogg theora encoded video", help_text=_("Must be encoded in Ogg Theora to play back correctly"))
+    webm_size = models.PositiveIntegerField(editable=False, null=True, blank=True)
+    h264 = models.FileField(upload_to='uploads/videos/h264/', null=True, blank=True, verbose_name="H.264 encoded video", help_text=_("Must be encoded as H.264 to play back correctly"))
+    ogg = models.FileField(upload_to='uploads/videos/ogg/', null=True, blank=True, verbose_name="Ogg theora encoded video", help_text=_("Must be encoded as Ogg Theora to play back correctly"))
+    webm = models.FileField(upload_to='uploads/videos/webm/', null=True, blank=True, verbose_name="WEBM encoded video", help_text=_("Must be encoded as WebM to play back correctly"))
     youtube_url = models.CharField(max_length=100, null=True, blank=True, verbose_name="YouTube URL", help_text=_("The full YouTube URL. Ex. http://www.youtube.com/watch?v=cmVLYaxHnPA"))
     poster = models.ForeignKey(Image)
 
     def save(self, *args, **kwargs):
         # file size
-        if self.h264 and self.ogg:
+        if self.h264 and self.ogg and self.webm:
             try:
                 self.h264_size = self.h264.size
                 self.ogg_size = self.ogg.size
+                self.webm_size = self.webm.size
             except OSError:
                 pass
 
         # make sure that both formats were specified or a video_url was provided"
-        if (self.h264 and self.ogg) or self.youtube_url:
+        if (self.h264 and self.ogg and self.webm) or self.youtube_url:
             super(Video, self).save(*args, **kwargs)
         else:
-            raise ValidationError("You must upload both video types (H.264 & Ogg) or provide a video_url")
+            raise ValidationError("You must upload all video types (H.264, Ogg and WEBM) or provide a YouTube URL")

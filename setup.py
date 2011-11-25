@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-file-picker',
-    version='0.6.0',
-    author='Caktus Consulting Group',
+    version='0.6.1',
+    author='Caktus Consulting Group and Evan Culver',
     author_email='solutions@caktusgroup.com',
     packages=find_packages(exclude=['sample_project']),
     include_package_data=True,
