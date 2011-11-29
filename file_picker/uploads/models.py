@@ -93,7 +93,7 @@ class Video(BaseMetaModel):
     h264 = models.FileField(upload_to='uploads/videos/h264/', null=True, blank=True, verbose_name="H.264 encoded video", help_text=_("Must be encoded as H.264 to play back correctly"))
     ogg = models.FileField(upload_to='uploads/videos/ogg/', null=True, blank=True, verbose_name="Ogg theora encoded video", help_text=_("Must be encoded as Ogg Theora to play back correctly"))
     webm = models.FileField(upload_to='uploads/videos/webm/', null=True, blank=True, verbose_name="WEBM encoded video", help_text=_("Must be encoded as WebM to play back correctly"))
-    youtube_url = models.CharField(max_length=100, null=True, blank=True, verbose_name="YouTube URL", help_text=_("The full YouTube URL. Ex. http://www.youtube.com/watch?v=cmVLYaxHnPA"))
+    youtube_url = models.CharField(max_length=100, null=True, blank=True, verbose_name="YouTube embed URL", help_text=_("The YouTube embed URL. Ex. http://www.youtube.com/embed/cmVLYaxHnPA"))
     poster = models.ForeignKey(Image)
 
     def save(self, *args, **kwargs):
