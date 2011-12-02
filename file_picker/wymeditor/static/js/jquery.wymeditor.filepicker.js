@@ -87,10 +87,10 @@ $(document).ready(function() {
     $('textarea.wymeditor').each(function(idx, el) {
         $(el).wymeditor({
             updateSelector: 'input:submit',
-            basePath: 'http://dev.ufogrid.com/static/wymeditor/',
-            skinPath: 'http://dev.ufogrid.com/static/wymeditor/skins/twopanels/',
+            basePath: '/static/wymeditor/',
+            skinPath: '/static/wymeditor/skins/twopanels/',
             skin: 'twopanels',
-            stylesheet: 'http://dev.ufogrid.com/static/css/wymeditor-custom.css',
+            stylesheet: '/static/css/wymeditor-custom.css',
             updateEvent: 'click',
             postInit: function(wym) {
                 wym.filepicker();
