@@ -23,11 +23,11 @@ class UploadAdmin(admin.ModelAdmin):
 
 class AudioUploadAdmin(UploadAdmin):
     list_display = ('name', 'is_podcast',)
-    fields = ('name', 'description', 'mp3', 'ogg', 'webm', 'poster', 'is_podcast',)
+    fields = ('name', 'description', 'file', 'poster', 'is_podcast',)
 
 
 class VideoUploadAdmin(UploadAdmin):
-    fields = ('name', 'description', 'h264', 'ogg', 'webm', 'youtube_url', 'poster',)
+    fields = ('name', 'description', 'file', 'youtube_url', 'poster',)
 
 admin.site.register(upload_models.File, UploadAdmin)
 admin.site.register(upload_models.Image, UploadAdmin)
