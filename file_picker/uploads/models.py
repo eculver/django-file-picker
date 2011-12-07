@@ -79,10 +79,10 @@ class Audio(BaseMetaModel):
                 pass
 
         # make sure that both formats were specified or a video_url was provided"
-        if self.mp3 and self.ogg and self.webm:
-            super(Audio, self).save(*args, **kwargs)
-        else:
-            raise ValidationError("You must upload all audio types")
+        #if self.mp3 and self.ogg and self.webm:
+        super(Audio, self).save(*args, **kwargs)
+        #else:
+            #raise ValidationError("You must upload all audio types")
 
 
 class Video(BaseMetaModel):
@@ -107,7 +107,7 @@ class Video(BaseMetaModel):
                 pass
 
         # make sure that both formats were specified or a video_url was provided"
-        if (self.h264 and self.ogg and self.webm) or self.youtube_url:
-            super(Video, self).save(*args, **kwargs)
-        else:
-            raise ValidationError("You must upload all video types (H.264, Ogg and WEBM) or provide a YouTube URL")
+        #if (self.h264 and self.ogg and self.webm) or self.youtube_url:
+        super(Video, self).save(*args, **kwargs)
+        #else:
+            #raise ValidationError("You must upload all video types (H.264, Ogg and WEBM) or provide a YouTube URL")
