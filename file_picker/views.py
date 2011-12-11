@@ -181,7 +181,7 @@ class ImagePickerBase(FilePickerBase):
         instance = getattr(obj, self.field)
 
         try:
-            thumb = get_thumbnail(instance, "150x150")
+            thumb = get_thumbnail(instance, settings.THUMBNAIL_SIZE)
         except ThumbnailError, e:
             logger.exception(e)
             thumb = None
