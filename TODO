@@ -1,0 +1,5 @@
+Fix paths in JS so that they don't have to be hard-coded
+
+Support oembed
+
+Use handlebars to generate overlay form instead of janky element create statments in jQuery.

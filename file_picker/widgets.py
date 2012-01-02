@@ -12,6 +12,13 @@ class FilePickerWidget(forms.Textarea):
             classes.append("file_picker_name_file_%s" % pickers['file'])
         if 'image' in pickers:
             classes.append("file_picker_name_image_%s" % pickers['image'])
+        if 'audio' in pickers:
+            classes.append("file_picker_name_audio_%s" % pickers['audio'])
+        if 'video' in pickers:
+            classes.append("file_picker_name_video_%s" % pickers['video'])
+        if 'youtube' in pickers:
+            classes.append("file_picker_name_youtube_%s" % pickers['youtube'])
+
         self.attrs['class'] = ' '.join(classes)
 
 
@@ -23,7 +30,7 @@ class SimpleFilePickerWidget(FilePickerWidget):
         super(SimpleFilePickerWidget, self).__init__(pickers, *args, **kwargs)
 
     class Media:
-        css = {"all": ("css/filepicker.overlay.css",)}
-        js = ("js/ajaxupload.js",
-              "js/jquery.filepicker.js",
-              "js/jquery.filepicker.simple.js")
+        css = {"all": ("file_picker/css/filepicker.overlay.css",)}
+        js = ("file_picker/js/ajaxupload.js",
+              "file_picker/js/jquery.filepicker.js",
+              "file_picker/js/jquery.filepicker.simple.js")

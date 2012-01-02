@@ -1,7 +1,7 @@
 # Django settings for sample_project project.
-from os import path
+import os
 
-PROJECT_PATH = path.abspath('%s' % path.dirname(__file__))
+PROJECT_PATH = os.path.abspath('%s' % os.path.dirname(__file__))
 
 DATABASES = {
     'default': {
@@ -39,7 +39,7 @@ USE_I18N = True
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = '%s/media/' % PROJECT_PATH
-STATIC_ROOT = '%s/static/' % PROJECT_PATH
+STATIC_ROOT = '%s/static_build/' % PROJECT_PATH
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -51,6 +51,22 @@ STATIC_URL = '/static/'
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
+
+# Additional locations of static files
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_PATH, 'static'),
+)
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'ki&&#oatj)5&+roxg3&(#$4%^srdh3zaayq9yoa(0_@&ge=3m+'
@@ -74,6 +90,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_PATH, 'templates').replace('\\','/'),
 )
 
 INSTALLED_APPS = (
@@ -86,6 +103,7 @@ INSTALLED_APPS = (
     'file_picker',
     'file_picker.uploads',
     'file_picker.wymeditor',
+    'sorl.thumbnail',
     'sample_project.article',
 )
 

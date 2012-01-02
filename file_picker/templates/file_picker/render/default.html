@@ -1,0 +1,5 @@
+{% spaceless %}
+<a href="{{ file.url }}" class="{{ options.class }}">
+{% if options.title %}{{ options.title }}{% else %}{{ upload.title }}{% endif %}
+</a>
+{% endspaceless %}

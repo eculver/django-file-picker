@@ -1,0 +1,3 @@
+{% spaceless %}
+<img src="{{ file.url }}" width="{{ file.width }}" height="{{ file.height }}" class="{{ options.class }}" alt="{% if options.alt %}{{ options.alt }}{% else %}{{ upload.name }}{% endif %}" />
+{% endspaceless %}

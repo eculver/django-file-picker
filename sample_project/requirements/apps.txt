@@ -1,3 +1,4 @@
 sorl-thumbnail
-svn+http://code.djangoproject.com/svn/django/trunk/#django
-
+django
+PIL
+django-oembed

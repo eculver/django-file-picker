@@ -12,7 +12,7 @@ class PostForm(forms.ModelForm):
         super(PostForm, self).__init__(*args, **kwargs)
         from file_picker.widgets import SimpleFilePickerWidget
         from file_picker.wymeditor.widgets import WYMeditorWidget
-        pickers = {'image': "images", 'file': "files"}
+        pickers = {'file': "files", 'image': "images", 'audio': "audio", 'video': "videos"}
         # simple widget
         simple_widget = SimpleFilePickerWidget(pickers=pickers)
         self.fields['body'].widget = simple_widget
@@ -24,13 +24,12 @@ class PostForm(forms.ModelForm):
         model = Post
 
 
-
 class PostAdmin(admin.ModelAdmin):
 
     form = PostForm
 
     class Media:
-        js = ("http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js",)
+        js = ("file_picker/js/jquery.tools.min.js",)
 
 admin.site.register(Post, PostAdmin)
 

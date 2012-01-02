@@ -4,7 +4,7 @@ import traceback
 import tempfile
 import datetime
 
-import file_picker.settings
+import file_picker.settings as settings
 
 from django.db import models
 from django.db.models import Q
@@ -65,7 +65,7 @@ class FilePickerBase(object):
         if build_headers:
             self.extra_headers = extra_headers
 
-        
+
     def protect(self, view, csrf_exempt=False):
         def wrapper(*args, **kwargs):
             data = {}
@@ -159,11 +159,13 @@ class FilePickerBase(object):
             return HttpResponseServerError()
         for obj in page_obj.object_list:
             result.append(self.append(obj))
+
         data = {
             'page': page,
             'pages': pages.page_range,
             'search': form.cleaned_data['search'],
             'result': result,
+            'model': self.model.__name__,
             'has_next': page_obj.has_next(),
             'has_previous': page_obj.has_previous(),
             'link_headers': self.link_headers,
@@ -195,3 +197,37 @@ class ImagePickerBase(FilePickerBase):
             json['insert'] = [settings.NOT_FOUND_STRING,]
 
         return json
+
+
+class AudioPickerBase(FilePickerBase):
+    link_headers = ['Audio File',]
+    poster_field = 'poster'
+
+    def append(self, obj):
+        json = super(AudioPickerBase, self).append(obj)
+        instance = getattr(obj, self.field)
+
+        audio_formatted = [render_upload(instance),]
+        json['link_content'] = ['Click to insert'];
+        json['poster'] = obj.poster.file.url
+        json['insert'] = audio_formatted
+
+        return json
+
+
+class VideoPickerBase(FilePickerBase):
+    link_headers = ['Video File',]
+    poster_field = 'poster'
+
+    def append(self, obj):
+        json = super(VideoPickerBase, self).append(obj)
+        instance = getattr(obj, self.field)
+
+        video_formatted = [render_upload(instance),]
+        json['link_content'] = ['Click to insert'];
+        json['poster'] = obj.poster.file.url
+        json['insert'] = video_formatted
+
+        return json
+
+
