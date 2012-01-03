@@ -141,7 +141,7 @@ WYMeditor.editor.prototype.filepicker = function(options) {
                 e.preventDefault();
                 $(overlay).data('wym', wym);
                 conf = $(overlay).data('filePicker').getConf();
-                conf.url = pickers.audio;
+                conf.url = pickers.video;
                 $(overlay).data('overlay').load();
             });
 
