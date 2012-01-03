@@ -40,3 +40,22 @@ def render_upload(file, template_path="file_picker/render/", **options):
     return tpl.render(template.Context({'file': file,
                                         'media_url': MEDIA_URL,
                                         'options': options}))
+
+def render_youtube(file, template_path="file_picker/render/", **options):
+    """
+    Render a single ``Video`` model instance using the
+    appropriate youtube rendering template and the given keyword options, and
+    return the rendered HTML.
+
+    """
+    if file is None:
+        return NOT_FOUND_STRING
+
+    templates = ['video/youtube']
+
+    tpl = template.loader.select_template(
+        ["%s.html" % join(template_path, p) for p in templates])
+
+    return tpl.render(template.Context({'file': file,
+                                        'media_url': MEDIA_URL,
+                                        'options': options}))

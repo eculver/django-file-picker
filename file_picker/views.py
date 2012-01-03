@@ -19,7 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from sorl.thumbnail import get_thumbnail
 from sorl.thumbnail.helpers import ThumbnailError
 from file_picker.forms import QueryForm, model_to_AjaxItemForm
-from file_picker.utils import render_upload
+from file_picker.utils import render_upload, render_youtube
 
 logger = logging.getLogger('filepicker.views')
 
@@ -106,9 +106,15 @@ class FilePickerBase(object):
             else:
                 value = unicode(value)
             extra[name] = value
-        return {'name': unicode(obj), 'url': getattr(obj, self.field).url,
+
+        try:
+            url = getattr(obj, self.field).url
+        except:
+            url = ''
+
+        return {'name': unicode(obj), 'url': url,
             'extra': extra,
-            'insert': [getattr(obj, self.field).url,],
+            'insert': [url,],
             'link_content': ['Click to insert'],
         }
 
@@ -223,7 +229,7 @@ class VideoPickerBase(FilePickerBase):
         json = super(VideoPickerBase, self).append(obj)
         instance = getattr(obj, self.field)
 
-        video_formatted = [render_upload(instance),]
+        video_formatted = [render_youtube(obj)] if obj.youtube_url else [render_upload(instance)]
         json['link_content'] = ['Click to insert'];
         json['poster'] = obj.poster.file.url
         json['insert'] = video_formatted
