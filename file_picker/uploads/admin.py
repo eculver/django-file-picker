@@ -1,5 +1,6 @@
 from django.contrib import admin
 from file_picker.uploads import models as upload_models
+from file_picker.uploads.forms import VideoAdminForm
 
 class UploadAdmin(admin.ModelAdmin):
     fields = ('name', 'description', 'file',)
@@ -27,6 +28,7 @@ class AudioUploadAdmin(UploadAdmin):
 
 
 class VideoUploadAdmin(UploadAdmin):
+    form = VideoAdminForm
     fields = ('name', 'description', 'file', 'youtube_url', 'poster',)
 
 admin.site.register(upload_models.File, UploadAdmin)

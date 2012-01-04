@@ -74,11 +74,3 @@ class Video(BaseFileModel):
     file = models.FileField(upload_to='uploads/videos/', null=True, blank=True, verbose_name="H.264 encoded video", help_text=_("Must be encoded as H.264 to play back correctly"))
     youtube_url = models.CharField(max_length=100, null=True, blank=True, verbose_name="YouTube embed URL", help_text=_("The YouTube embed URL. Ex. http://www.youtube.com/embed/cmVLYaxHnPA"))
     poster = models.ForeignKey(Image)
-
-    def save(self, *args, **kwargs):
-        # make sure that a file was uploaded or a youtube_url was provided
-        if self.file or self.youtube_url:
-            super(Video, self).save(*args, **kwargs)
-        else:
-            raise ValidationError("You must a file or provide a YouTube URL")
-
