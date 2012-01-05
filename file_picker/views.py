@@ -195,7 +195,7 @@ class ImagePickerBase(FilePickerBase):
             thumb = None
 
         if thumb:
-            image_formatted = [render_upload(thumb),]
+            image_formatted = [render_upload(obj),]
             json['link_content'] = image_formatted
             json['insert'] = image_formatted
         else:
@@ -213,7 +213,7 @@ class AudioPickerBase(FilePickerBase):
         json = super(AudioPickerBase, self).append(obj)
         instance = getattr(obj, self.field)
 
-        audio_formatted = [render_upload(instance),]
+        audio_formatted = [render_upload(obj),]
         json['link_content'] = ['Click to insert'];
         json['poster'] = obj.poster.file.url
         json['insert'] = audio_formatted
@@ -229,7 +229,7 @@ class VideoPickerBase(FilePickerBase):
         json = super(VideoPickerBase, self).append(obj)
         instance = getattr(obj, self.field)
 
-        video_formatted = [render_youtube(obj)] if obj.youtube_url else [render_upload(instance)]
+        video_formatted = [render_youtube(obj)] if obj.youtube_url else [render_upload(obj)]
         json['link_content'] = ['Click to insert'];
         json['poster'] = obj.poster.file.url
         json['insert'] = video_formatted

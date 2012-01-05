@@ -64,7 +64,7 @@ class VideoForm(forms.ModelForm):
         fields = ('name', 'description', 'poster', 'youtube_url',)
 
     def save(self, commit=True):
-        form = super(AudioForm, self).save(commit=False)
+        form = super(VideoForm, self).save(commit=False)
         file_path = self.cleaned_data['file']
         fh = ContentFile(open(self.cleaned_data['file'], 'r').read())
         form.file.save(file_path, fh)

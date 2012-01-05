@@ -5,9 +5,9 @@ from django import template
 from file_picker.parse import parse_types
 from file_picker.settings import NOT_FOUND_STRING, MEDIA_URL
 
-def render_upload(file, template_path="file_picker/render/", **options):
+def render_upload(obj, template_path="file_picker/render/", **options):
     """
-    Render a single ``File`` or ``Image`` model instance using the
+    Render a single ``File`` or ``Image`` model instance (``obj``) using the
     appropriate rendering template and the given keyword options, and
     return the rendered HTML.
 
@@ -20,7 +20,7 @@ def render_upload(file, template_path="file_picker/render/", **options):
     ``file_picker/render/default.html``
 
     """
-    if file is None:
+    if obj is None or obj.file is None:
         return NOT_FOUND_STRING
 
     template_name = options.pop('as', None)
@@ -29,7 +29,7 @@ def render_upload(file, template_path="file_picker/render/", **options):
                      "%s/default" % template_name.split('/')[0],
                      "default"]
     else:
-        [file_type, file_subtype] = parse_types(file.url)
+        [file_type, file_subtype] = parse_types(obj.file.url)
         templates = [join(file_type, file_subtype),
                      join(file_type, "default"),
                      "default"]
@@ -37,18 +37,18 @@ def render_upload(file, template_path="file_picker/render/", **options):
     tpl = template.loader.select_template(
         ["%s.html" % join(template_path, p) for p in templates])
 
-    return tpl.render(template.Context({'file': file,
+    return tpl.render(template.Context({'obj': obj,
                                         'media_url': MEDIA_URL,
                                         'options': options}))
 
-def render_youtube(file, template_path="file_picker/render/", **options):
+def render_youtube(obj, template_path="file_picker/render/", **options):
     """
     Render a single ``Video`` model instance using the
     appropriate youtube rendering template and the given keyword options, and
     return the rendered HTML.
 
     """
-    if file is None:
+    if obj is None or obj.file is None:
         return NOT_FOUND_STRING
 
     templates = ['video/youtube']
@@ -56,6 +56,6 @@ def render_youtube(file, template_path="file_picker/render/", **options):
     tpl = template.loader.select_template(
         ["%s.html" % join(template_path, p) for p in templates])
 
-    return tpl.render(template.Context({'file': file,
+    return tpl.render(template.Context({'obj': obj,
                                         'media_url': MEDIA_URL,
                                         'options': options}))

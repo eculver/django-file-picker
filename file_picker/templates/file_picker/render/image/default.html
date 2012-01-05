@@ -1,3 +1,7 @@
+{% load thumbnail %}
+
 {% spaceless %}
-<img src="{{ file.url }}" width="{{ file.width }}" height="{{ file.height }}" class="{{ options.class }}" alt="{% if options.alt %}{{ options.alt }}{% else %}{{ upload.name }}{% endif %}" />
+    {% thumbnail obj.file "300" upscale=false as im %}
+        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="{{ options.class }}" alt="{% if options.alt %}{{ options.alt }}{% else %}{{ obj.name }}{% endif %}" />
+    {% endthumbnail %}
 {% endspaceless %}

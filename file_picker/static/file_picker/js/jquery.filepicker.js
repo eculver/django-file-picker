@@ -116,27 +116,13 @@
                         } else {
                             self.displayForm(response);
                             self.setupUpload();
-                            uploadForm = uploadPane.find('.upload_form');
-                            submit = $('<input>').attr({
-                                'type': 'submit',
-                                'value': 'Submit'
-                            }).click(function (e) {
-                                e.preventDefault();
-                                uploadForm = uploadPane.find('.upload_form');
-                                data = {};
-                                $(':input', uploadForm).each(function () {
-                                    data[this.name] = this.value;
-                                });
-                                self.getForm(data);
-                            });
-                            uploadForm.append(submit);
                         }
                     });
                 }
             },
 
             displayForm: function (data) {
-                var pane, browse, runtime, form, table;
+                var pane, browse, runtime, form, table, submit, uploadForm;
 
                 pane = root.find('.file-picker-upload');
                 pane.empty();
@@ -160,7 +146,23 @@
                 });
 
                 table = $('<table>').html(data.form);
+                /*
+                submit = $('<input>').attr({
+                    'type': 'submit',
+                    'value': 'Submit'
+                }).click(function (e) {
+                    e.preventDefault();
+                    uploadForm = uploadPane.find('.upload_form');
+                    data = {};
+                    $(':input', uploadForm).each(function () {
+                        data[this.name] = this.value;
+                    });
+                    self.getForm(data);
+                });
+                */
                 form.append(table);
+                form.append(submit);
+
                 pane.append(form);
             },
 

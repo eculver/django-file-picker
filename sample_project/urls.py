@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
     (r'^file-picker/', include(file_picker.site.urls)),
-    
+
     (r'^%s(?P<path>.*)' % settings.MEDIA_URL.lstrip('/'),
      'django.views.static.serve',
      {'document_root': settings.MEDIA_ROOT, 'show_indexes': True})
