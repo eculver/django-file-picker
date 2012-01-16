@@ -3,3 +3,6 @@ Fix paths in JS so that they don't have to be hard-coded
 Support oembed
 
 Use handlebars to generate overlay form instead of janky element create statments in jQuery.
+
+Move jquery-tools into codebase so that it doesn't have to be included in custom admin, but be sure to not include jQuery in the build.
+
