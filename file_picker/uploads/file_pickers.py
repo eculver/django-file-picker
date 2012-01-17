@@ -10,7 +10,7 @@ class FileForm(forms.ModelForm):
 
     class Meta(object):
         model = File
-        fields = ('name', 'description')
+        fields = ('name', 'description', 'caption',)
 
     def save(self, commit=True):
         form = super(FileForm, self).save(commit=False)
@@ -27,7 +27,7 @@ class ImageForm(forms.ModelForm):
 
     class Meta(object):
         model = Image
-        fields = ('name', 'description')
+        fields = ('name', 'description', 'caption',)
 
     def save(self, commit=True):
         form = super(ImageForm, self).save(commit=False)
@@ -44,7 +44,7 @@ class AudioForm(forms.ModelForm):
 
     class Meta(object):
         model = Audio
-        fields = ('name', 'description', 'poster',)
+        fields = ('name', 'description', 'caption', 'poster',)
 
     def save(self, commit=True):
         form = super(AudioForm, self).save(commit=False)
@@ -61,7 +61,7 @@ class VideoForm(forms.ModelForm):
 
     class Meta(object):
         model = Video
-        fields = ('name', 'description', 'poster', 'youtube_url',)
+        fields = ('name', 'description', 'caption', 'poster', 'youtube_url',)
 
     def save(self, commit=True):
         form = super(VideoForm, self).save(commit=False)

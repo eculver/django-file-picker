@@ -131,6 +131,10 @@ div.panes div.pane {
     margin-top: 8px;
 }
 
+.file-picker-overlay textarea {
+    height: 70px;
+}
+
 .plupload {
     cursor: pointer;
 }
