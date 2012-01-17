@@ -1,5 +1,6 @@
 {% spaceless %}
-<a href="{{ media_url }}/{{ file.url }}" class="{{ options.class }}">
-{% if options.title %}{{ options.title }}{% else %}{{ upload.title }}{% endif %}
-</a>
+    <a href="{{ media_url }}/{{ obj.file.url }}" class="{{ options.class }}">
+        {% if options.title %}{{ options.title }}{% else %}{{ obj.title }}{% endif %}
+    </a>
+    {% if obj.caption %}<span>{{ obj.caption }}</span>{% endif %}
 {% endspaceless %}

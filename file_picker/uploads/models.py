@@ -11,12 +11,15 @@ from file_picker.parse import parse_types
 class BaseMetaModel(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
+    caption = models.TextField(blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_created",
                                    null=True, blank=True)
     modified_by = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_modified",
                                     null=True, blank=True)
+
+
 
     class Meta:
         abstract = True

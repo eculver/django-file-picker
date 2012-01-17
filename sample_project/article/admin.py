@@ -25,11 +25,7 @@ class PostForm(forms.ModelForm):
 
 
 class PostAdmin(admin.ModelAdmin):
-
     form = PostForm
-
-    class Media:
-        js = ("file_picker/js/jquery.tools.min.js",)
 
 admin.site.register(Post, PostAdmin)
 

@@ -3,7 +3,7 @@ from file_picker.uploads import models as upload_models
 from file_picker.uploads.forms import VideoAdminForm
 
 class UploadAdmin(admin.ModelAdmin):
-    fields = ('name', 'description', 'file',)
+    fields = ('name', 'description', 'caption', 'file',)
 
     def save_model(self, request, obj, form, change):
         instance = form.save(commit=False)

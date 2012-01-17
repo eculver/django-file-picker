@@ -1,3 +1,4 @@
 {% spaceless %}
-<img src="{{ media_url }}/{{ file.url }}" width="{{ file.width }}" height="{{ file.height }}" class="{{ options.class }}" alt="{% if options.alt %}{{ options.alt }}{% else %}{{ upload.name }}{% endif %}" />
+    <img src="{{ media_url }}/{{ obj.file.url }}" width="{{ obj.file.width }}" height="{{ obj.file.height }}" class="{{ options.class }}" alt="{% if options.alt %}{{ options.alt }}{% else %}{{ obj.name }}{% endif %}" />
+    {% if obj.caption %}<span>{{ obj.caption }}</span>{% endif %}
 {% endspaceless %}

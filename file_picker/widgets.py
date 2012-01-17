@@ -1,5 +1,5 @@
 from django import forms
-
+from django.conf import settings
 
 class FilePickerWidget(forms.Textarea):
     """ Base file picker widget that can be extended """
@@ -31,6 +31,9 @@ class SimpleFilePickerWidget(FilePickerWidget):
 
     class Media:
         css = {"all": ("file_picker/css/filepicker.overlay.css",)}
-        js = ("file_picker/js/ajaxupload.js",
+        js = (getattr(settings, "JQUERY_URL",
+              "https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"),
+              "file_picker/js/jquery.tools.min.js",
+              "file_picker/js/ajaxupload.js",
               "file_picker/js/jquery.filepicker.js",
               "file_picker/js/jquery.filepicker.simple.js")

@@ -47,6 +47,8 @@ STATIC_ROOT = '%s/static_build/' % PROJECT_PATH
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
+JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".

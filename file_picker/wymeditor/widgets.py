@@ -12,6 +12,7 @@ class WYMeditorWidget(FilePickerWidget):
         js = (
             getattr(settings, 'JQUERY_URL',
             'https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js'),
+            'file_picker/js/jquery.tools.min.js',
             'wymeditor/jquery.wymeditor.js',
             'wymeditor/jquery.wymeditor.filepicker.js',
             'wymeditor/plugins/embed/jquery.wymeditor.embed.js',
