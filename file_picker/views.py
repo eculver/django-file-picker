@@ -195,8 +195,9 @@ class ImagePickerBase(FilePickerBase):
             thumb = None
 
         if thumb:
+            thumb_formatted = ['<img src=\'%s\'>' % thumb.url,]
             image_formatted = [render_upload(obj),]
-            json['link_content'] = image_formatted
+            json['link_content'] = thumb_formatted
             json['insert'] = image_formatted
         else:
             json['link_content'] = [settings.NOT_FOUND_STRING,]
