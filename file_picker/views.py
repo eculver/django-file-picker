@@ -231,10 +231,15 @@ class VideoPickerBase(FilePickerBase):
         json = super(VideoPickerBase, self).append(obj)
         instance = getattr(obj, self.field)
 
-        video_formatted = [render_youtube(obj)] if obj.youtube_url else [render_upload(obj)]
+        if obj.embed_url and obj.embed_object:
+            # try to grab and decode the embed object
+            video_formatted = [obj.embed_object]
+        else:
+            video_formatted = [render_upload(obj)]
+
         json['link_content'] = ['Click to insert'];
-        json['poster'] = obj.poster.file.url
         json['insert'] = video_formatted
+        json['poster'] = poster = obj.poster.file.url
 
         return json
 
@@ -245,15 +250,19 @@ class SlideshowPickerBase(FilePickerBase):
 
     def append(self, obj):
         json = super(SlideshowPickerBase, self).append(obj)
-        first_image = obj.images.all()[0]
 
         try:
-            thumb = get_thumbnail(first_image, settings.THUMBNAIL_SIZE)
-            thumb_formatted = ['<img src=\'%s\'>' % thumb.url,]
+            first_image = obj.images.all()[0]
+        except Exception, e:
+            first_image = None
+
+        try:
+            thumb = get_thumbnail(first_image.file, settings.THUMBNAIL_SIZE)
+            thumb_formatted = '<img src=\'%s\'>' % thumb.url
         except ThumbnailError, e:
             logger.exception(e)
             thumb = None
-            thumb_formatted = [settings.NOT_FOUND_STRING,]
+            thumb_formatted = settings.NOT_FOUND_STRING
 
         slideshow_tag = '%sslideshow:%d%s' % (settings.MODULE_TAG_BEGINS_WITH,\
                                               obj.pk,\

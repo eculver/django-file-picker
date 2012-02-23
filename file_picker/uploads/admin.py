@@ -29,7 +29,12 @@ class AudioUploadAdmin(UploadAdmin):
 
 class VideoUploadAdmin(UploadAdmin):
     form = VideoAdminForm
-    fields = ('name', 'description', 'caption', 'file', 'youtube_url', 'poster',)
+    fields = ('name', 'description', 'caption', 'file', 'embed_url', 'poster',)
+
+    def save_model(self, request, obj, form, change):
+        obj.embed_object = form.cleaned_data['embed_object'] if form.cleaned_data.has_key('embed_object') else ''
+        obj.save()
+
 
 admin.site.register(upload_models.File, UploadAdmin)
 admin.site.register(upload_models.Image, UploadAdmin)

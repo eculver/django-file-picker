@@ -61,7 +61,7 @@ class VideoForm(forms.ModelForm):
 
     class Meta(object):
         model = Video
-        fields = ('name', 'description', 'caption', 'poster', 'youtube_url',)
+        fields = ('name', 'description', 'caption', 'poster', 'embed_url',)
 
     def save(self, commit=True):
         form = super(VideoForm, self).save(commit=False)
@@ -93,7 +93,7 @@ class AudioPicker(file_picker.AudioPickerBase):
 
 class VideoPicker(file_picker.VideoPickerBase):
     form = VideoForm
-    columns = ('name', 'file_type', 'youtube_url', 'date_modified',)
+    columns = ('name', 'file_type', 'embed_url', 'date_modified',)
     extra_headers = ('Name', 'File Type', 'YouTube URL', 'Date Modified',)
 
 

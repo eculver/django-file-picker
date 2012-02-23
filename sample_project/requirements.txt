@@ -1,4 +1,9 @@
 Django==1.3.1
-sorl-thumbnail==3.2.5
+Embedly==0.4.2
 PIL==1.1.7
+django-file-picker==0.7.5
 django-oembed==0.1.3
+django-sortedm2m==0.3.3
+httplib2==0.7.2
+sorl-thumbnail==11.09
+wsgiref==0.1.2
