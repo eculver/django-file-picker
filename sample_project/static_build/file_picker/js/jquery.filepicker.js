@@ -321,7 +321,7 @@
         });
 
         // callbacks
-        $.each(['onImageClick', 'onAudioClick', 'onVideoClick'], function (i, name) {
+        $.each(['onImageClick', 'onAudioClick', 'onVideoClick', 'onSlideshowClick'], function (i, name) {
             // configuration
             if ($.isFunction(conf[name])) { 
                 $(self).bind(name, conf[name]); 

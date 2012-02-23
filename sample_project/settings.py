@@ -86,6 +86,14 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+    'sample_project.contrib.context_processors.default',
+)
+
 ROOT_URLCONF = 'sample_project.urls'
 
 TEMPLATE_DIRS = (
@@ -102,11 +110,11 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.staticfiles',
+    'sorl.thumbnail',
     'file_picker',
     'file_picker.uploads',
     'file_picker.slideshows',
     'file_picker.wymeditor',
-    'sorl.thumbnail',
     'sample_project.article',
 )
 

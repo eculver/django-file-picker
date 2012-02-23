@@ -6,7 +6,7 @@ from file_picker.slideshows.models import Slideshow
 register = dj_template.Library()
 
 @register.filter
-def render_slideshows(content, template='slideshow/slideshow.html'):
+def render_slideshows(content, template='slideshows/slideshow.html'):
     # parse out all slideshow tags
     regex = r'%s(?P<module_name>[a-zA-Z]+):(?P<slideshow_id>\d+)%s' % \
             (re.escape(settings.MODULE_TAG_BEGINS_WITH), re.escape(settings.MODULE_TAG_ENDS_WITH))

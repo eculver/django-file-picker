@@ -1,0 +1,22 @@
+{% extends 'sample_project/base.html' %}
+{% load slideshow_tags %}
+
+{% block title %}Sample Project{% endblock %}
+
+{% block content %}
+{{ post.teaser|safe|render_slideshows}}
+{% endblock %}
+
+{% block extrabody %}
+    <script>
+
+        // Initialize Galleria
+        $('.slideshow').galleria({
+            width: 500,
+            height: 500,
+            transition: 'fade'
+        });
+    </script>
+{% endblock %}
+
+
