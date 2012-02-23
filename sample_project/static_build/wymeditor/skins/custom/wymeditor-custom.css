@@ -44,13 +44,20 @@ p.important /* p[@class!="hidden-note"] */ {
     /* color: red; font-weight: bold; border: 2px solid red; */
 }
 
+/* IMG: Apply Border */
 img.border {
     border: 1px solid #ccc;
     /* border: 4px solid #ccc; */
 }
 
+/* IMG: Float Right */
 img.fright {
     float: right;
+}
+
+/* IMG: Float Left */
+img.fleft {
+    float: left;
 }
 
 /* LIST: Special */
@@ -59,7 +66,6 @@ ol.special {
     color: green;
     /** / background-color: #fc9; border: 2px solid red; /**/
 }
-
 
 /* /WYMeditor */
 /* END EDITOR RELATED STYLES */
