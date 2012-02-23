@@ -41,6 +41,7 @@ WYMeditor.editor.prototype.filepicker = function(options) {
             audioButton,
             videoButton,
             youtubeButton,
+            slideshowButton,
             conf;
 
         $.each(pickerNames, function(type, name) {
@@ -84,8 +85,12 @@ WYMeditor.editor.prototype.filepicker = function(options) {
                 wym.insert(insert);
                 playerOpts.success = function (player, node) { player.pause(); };
                 $('audio,video').mediaelementplayer(playerOpts);
+            },
+            onSlideshowClick: function(e, insert) {
+                var wym = this.getRoot().parent().data('wym');
+                wym.insert(insert);
+                wym.update();
             }
-
         }).insertBefore($(el));
 
         if (pickers.file) {
@@ -163,7 +168,26 @@ WYMeditor.editor.prototype.filepicker = function(options) {
 
             buttonList.append($('<li>').addClass('wym_tools_youtube_add').append(youtubeButton));
         }
+
+        if (pickers.slideshow) {
+            slideshowButton = $('<a>').text('Add Slideshow').attr({
+                'title': 'Slideshow',
+                'name': 'Slideshow',
+                'href': '#'
+            }).click(function(e) {
+                e.preventDefault();
+                $(overlay).data('wym', wym);
+                conf = $(overlay).data('filePicker').getConf();
+                conf.url = pickers.slideshow;
+                $(overlay).data('overlay').load();
+            });
+
+            buttonList.append($('<li>').addClass('wym_tools_slideshow_add').append(slideshowButton));
+        }
+
+
     }
+
 
     // extract file picker names from element and get URLs via JSON
     pickerNames = getFilePickerTypes($element);

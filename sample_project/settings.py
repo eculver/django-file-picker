@@ -104,6 +104,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'file_picker',
     'file_picker.uploads',
+    'file_picker.slideshows',
     'file_picker.wymeditor',
     'sorl.thumbnail',
     'sample_project.article',

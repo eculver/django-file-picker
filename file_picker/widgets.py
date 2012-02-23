@@ -18,6 +18,8 @@ class FilePickerWidget(forms.Textarea):
             classes.append("file_picker_name_video_%s" % pickers['video'])
         if 'youtube' in pickers:
             classes.append("file_picker_name_youtube_%s" % pickers['youtube'])
+        if 'slideshow' in pickers:
+            classes.append("file_picker_name_slideshow_%s" % pickers['slideshow'])
 
         self.attrs['class'] = ' '.join(classes)
 
