@@ -115,6 +115,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.staticfiles',
     'sorl.thumbnail',
+    'south',
     'file_picker',
     'file_picker.uploads',
     'file_picker.slideshows',
