@@ -1,7 +1,11 @@
 import mimetypes
+import file_picker.settings as settings
 
 from os.path import join
+from embedly import Embedly
 from django import template
+from django.core.exceptions import ImproperlyConfigured
+from file_picker.exceptions import EmbedlyException
 from file_picker.parse import parse_types
 from file_picker.settings import NOT_FOUND_STRING, MEDIA_URL
 
@@ -59,3 +63,23 @@ def render_youtube(obj, template_path="file_picker/render/", **options):
     return tpl.render(template.Context({'obj': obj,
                                         'media_url': MEDIA_URL,
                                         'options': options}))
+
+def get_embed_object(url):
+    if not settings.EMBEDLY_KEY:
+        raise ImproperlyConfigured("You have not specified an Embedly key in your settings file.")
+
+    print url
+
+    try:
+        client = Embedly(settings.EMBEDLY_KEY)
+        resp = client.oembed(url, maxwidth=settings.EMBED_MAX_WIDTH, maxheight=settings.EMBED_MAX_HEIGHT)
+
+        #else:
+            #raise EmbedlyException("The provider for the URL you provided is not supported by Embed.ly. Please try again.")
+    except Exception, e:
+        raise EmbedlyException("There was an issue with your embed URL. Please check that it is valid and try again")
+
+    if resp.error:
+        raise EmbedlyException("There was an issue looking up your embed URL: %s:%s" % (resp.error_code, resp.error_message))
+
+    return resp.get('html')
