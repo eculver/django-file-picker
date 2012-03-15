@@ -1,8 +1,8 @@
 import os
 
 from django import forms
-
-from embedly import Embedly
+from file_picker.exceptions import EmbedlyException
+from file_picker.utils import get_embed_object
 
 class VideoAdminForm(forms.ModelForm):
     def clean(self):
@@ -15,6 +15,9 @@ class VideoAdminForm(forms.ModelForm):
             raise forms.ValidationError("You must upload a file or provide an embed URL")
 
         if embed_url:
-            cleaned_data['embed_object'] = get_embed_object(embed_url)
+            try:
+                cleaned_data['embed_object'] = get_embed_object(embed_url)
+            except EmbedlyException, e:
+                raise forms.ValidationError(str(e))
 
         return cleaned_data

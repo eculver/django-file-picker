@@ -34,24 +34,29 @@ def model_to_AjaxItemForm(model):
             continue
         if isinstance(field, FIELD_EXCLUDES):
             exclude.append(field_name)
-    meta = type('Meta', (), { "model":model, "exclude": exclude})
+    meta = type('Meta', (), { "model": model, "exclude": exclude })
     modelform_class = type('modelform', (AjaxItemForm,), {"Meta": meta})
     return modelform_class
 
 
 class AjaxItemForm(forms.ModelForm):
-    file = forms.CharField(widget=forms.widgets.HiddenInput())
+    file = forms.CharField(widget=forms.widgets.HiddenInput(), label="File", required=False)
 
     def clean_file(self):
         file = self.cleaned_data['file']
-        if not os.path.exists(file):
+        if file and not os.path.exists(file):
             raise forms.ValidationError('Missing file')
         return file
 
     def save(self, *args, **kwargs):
         item = super(AjaxItemForm, self).save(commit=False)
-        getattr(item, self.Meta.exclude[0]).save(self.cleaned_data['file'],
-            ContentFile(open(str(self.cleaned_data['file']),'r').read())
-        )
+
+        if item.file is not 'none':
+            getattr(item, self.Meta.exclude[0]).save(self.cleaned_data['file'],
+                ContentFile(open(str(self.cleaned_data['file']),'r').read())
+            )
+        else:
+            item.file = None
+
         item.save(*args, **kwargs)
         return item

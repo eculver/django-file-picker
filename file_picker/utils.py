@@ -28,6 +28,7 @@ def render_upload(obj, template_path="file_picker/render/", **options):
         return NOT_FOUND_STRING
 
     template_name = options.pop('as', None)
+
     if template_name:
         templates = [template_name,
                      "%s/default" % template_name.split('/')[0],
@@ -68,18 +69,16 @@ def get_embed_object(url):
     if not settings.EMBEDLY_KEY:
         raise ImproperlyConfigured("You have not specified an Embedly key in your settings file.")
 
-    print url
-
     try:
         client = Embedly(settings.EMBEDLY_KEY)
         resp = client.oembed(url, maxwidth=settings.EMBED_MAX_WIDTH, maxheight=settings.EMBED_MAX_HEIGHT)
-
-        #else:
-            #raise EmbedlyException("The provider for the URL you provided is not supported by Embed.ly. Please try again.")
     except Exception, e:
         raise EmbedlyException("There was an issue with your embed URL. Please check that it is valid and try again")
 
     if resp.error:
         raise EmbedlyException("There was an issue looking up your embed URL: %s:%s" % (resp.error_code, resp.error_message))
+
+    if not resp.get('html'):
+        raise EmbedlyException("There was an issue looking up your embed URL: The provider is not supported by Embedly.")
 
     return resp.get('html')

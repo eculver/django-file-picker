@@ -1,8 +1,14 @@
 from django.contrib import admin
-from file_picker.slideshows.models import Slideshow
+from file_picker.slideshows.models import Slideshow, SlideshowOrdering
+
+class SlideshowOrderingInline(admin.TabularInline):
+    model = SlideshowOrdering
+    extra = 1
+
 
 class SlideshowAdmin(admin.ModelAdmin):
-    fields = ('name', 'description', 'caption', 'images',)
+    fields = ('name', 'description', 'caption',)
+    inlines = (SlideshowOrderingInline,)
 
     def save_model(self, request, obj, form, change):
         instance = form.save(commit=False)

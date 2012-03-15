@@ -1,7 +1,7 @@
 import re
 import file_picker.settings as settings
 from django import template as dj_template
-from file_picker.slideshows.models import Slideshow
+from file_picker.slideshows.models import Slideshow, SlideshowOrdering
 
 register = dj_template.Library()
 
@@ -18,10 +18,11 @@ def render_slideshows(content, template='slideshows/slideshow.html'):
         slideshow_id = tag[1]
 
         if module_name == 'slideshow':
-            slideshow = Slideshow.objects.get(id=int(slideshow_id))
+            slideshow = Slideshow.objects.filter(id=int(slideshow_id))
+            ordering = SlideshowOrdering.objects.filter(slideshow=slideshow).order_by('sort_value')
 
             # replace those tags with rendered slideshows
-            ctx = { 'slideshow': slideshow }
+            ctx = { 'images': ordering }
             tpl = dj_template.loader.select_template([template])
             rendered_slideshow = tpl.render(dj_template.Context(ctx))
             tag = '%sslideshow:%s%s' % (settings.MODULE_TAG_BEGINS_WITH, slideshow_id, settings.MODULE_TAG_ENDS_WITH)

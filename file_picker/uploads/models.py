@@ -21,8 +21,6 @@ class BaseMetaModel(models.Model):
     modified_by = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_modified",
                                     null=True, blank=True)
 
-
-
     class Meta:
         abstract = True
         ordering = ('-date_modified',)
@@ -78,5 +76,7 @@ class Video(BaseFileModel):
     "Basic video model"
     file = models.FileField(upload_to='uploads/videos/', null=True, blank=True, verbose_name="H.264 encoded video", help_text=_("Must be encoded as H.264 to play back correctly"))
     embed_url = models.CharField(max_length=100, null=True, blank=True, verbose_name="URL", help_text=_("The URL where the media is located. Ex. http://www.youtube.com/watch?v=YRQ49oX9ugU"))
-    embed_object = models.TextField(blank=True, null=True)
+    embed_object = models.TextField(null=True, blank=True)
     poster = models.ForeignKey(Image)
+
+

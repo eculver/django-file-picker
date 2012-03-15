@@ -231,11 +231,13 @@ class VideoPickerBase(FilePickerBase):
         json = super(VideoPickerBase, self).append(obj)
         instance = getattr(obj, self.field)
 
-        if obj.embed_url and obj.embed_object:
+        if obj.embed_object:
             # try to grab and decode the embed object
             video_formatted = [obj.embed_object]
-        else:
+        elif obj.file:
             video_formatted = [render_upload(obj)]
+        else:
+            video_formatted = ['unknown']
 
         json['link_content'] = ['Click to insert'];
         json['insert'] = video_formatted

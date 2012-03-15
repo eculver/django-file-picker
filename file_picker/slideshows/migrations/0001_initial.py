@@ -21,14 +21,14 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('slideshows', ['Slideshow'])
 
-        # Adding SortedM2M table for field images on 'Slideshow'
-        db.create_table('slideshows_slideshow_images', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('slideshow', models.ForeignKey(orm['slideshows.slideshow'], null=False)),
-            ('image', models.ForeignKey(orm['uploads.image'], null=False)),
-            ('sort_value', models.IntegerField())
+        # Adding model 'SlideshowOrdering'
+        db.create_table('slideshows_slideshowordering', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('slideshow', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['slideshows.Slideshow'])),
+            ('image', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['uploads.Image'])),
+            ('sort_value', self.gf('django.db.models.fields.IntegerField')()),
         ))
-        db.create_unique('slideshows_slideshow_images', ['slideshow_id', 'image_id'])
+        db.send_create_signal('slideshows', ['SlideshowOrdering'])
 
 
     def backwards(self, orm):
@@ -36,8 +36,8 @@ class Migration(SchemaMigration):
         # Deleting model 'Slideshow'
         db.delete_table('slideshows_slideshow')
 
-        # Removing M2M table for field images on 'Slideshow'
-        db.delete_table('slideshows_slideshow_images')
+        # Deleting model 'SlideshowOrdering'
+        db.delete_table('slideshows_slideshowordering')
 
 
     models = {
@@ -85,9 +85,16 @@ class Migration(SchemaMigration):
             'date_modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'images': ('sortedm2m.fields.SortedManyToManyField', [], {'to': "orm['uploads.Image']", 'symmetrical': 'False'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['uploads.Image']", 'through': "orm['slideshows.SlideshowOrdering']", 'symmetrical': 'False'}),
             'modified_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'slideshows_slideshow_modified'", 'null': 'True', 'to': "orm['auth.User']"}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
+        'slideshows.slideshowordering': {
+            'Meta': {'object_name': 'SlideshowOrdering'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['uploads.Image']"}),
+            'slideshow': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['slideshows.Slideshow']"}),
+            'sort_value': ('django.db.models.fields.IntegerField', [], {})
         },
         'uploads.image': {
             'Meta': {'object_name': 'Image'},
