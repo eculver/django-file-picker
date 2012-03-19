@@ -146,7 +146,6 @@
                 });
 
                 table = $('<table>').html(data.form);
-                /*
                 submit = $('<input>').attr({
                     'type': 'submit',
                     'value': 'Submit'
@@ -157,12 +156,11 @@
                     $(':input', uploadForm).each(function () {
                         data[this.name] = this.value;
                     });
+                    data.file = 'none';
                     self.getForm(data);
                 });
-                */
                 form.append(table);
                 form.append(submit);
-
                 pane.append(form);
             },
 
@@ -189,6 +187,9 @@
 
                         $('.runtime').html('Uploading ... Complete');
 
+                        uploadForm = uploadPane.find('.upload_form');
+                        uploadForm.find('input[type=submit]').remove();
+
                         submit = $('<input>').attr({
                             'class': 'add_to_model',
                             'type': 'submit',
@@ -204,7 +205,6 @@
                             data.file = response.name;
                             self.getForm(data);
                         });
-                        uploadForm = uploadPane.find('.upload_form');
                         uploadForm.append(submit);
                     }
                 });
@@ -321,7 +321,7 @@
         });
 
         // callbacks
-        $.each(['onImageClick', 'onAudioClick', 'onVideoClick'], function (i, name) {
+        $.each(['onImageClick', 'onAudioClick', 'onVideoClick', 'onSlideshowClick'], function (i, name) {
             // configuration
             if ($.isFunction(conf[name])) { 
                 $(self).bind(name, conf[name]); 

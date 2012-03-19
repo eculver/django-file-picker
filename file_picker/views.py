@@ -44,6 +44,7 @@ class FilePickerBase(object):
         if not self.columns:
             self.columns = self.field_names
         extra_headers = []
+
         for field_name in field_names:
             try:
                 field = model._meta.get_field(field_name)
@@ -230,10 +231,48 @@ class VideoPickerBase(FilePickerBase):
         json = super(VideoPickerBase, self).append(obj)
         instance = getattr(obj, self.field)
 
-        video_formatted = [render_youtube(obj)] if obj.youtube_url else [render_upload(obj)]
+        if obj.embed_object:
+            # try to grab and decode the embed object
+            video_formatted = [obj.embed_object]
+        elif obj.file:
+            video_formatted = [render_upload(obj)]
+        else:
+            video_formatted = ['unknown']
+
         json['link_content'] = ['Click to insert'];
-        json['poster'] = obj.poster.file.url
         json['insert'] = video_formatted
+        json['poster'] = poster = obj.poster.file.url
+
+        return json
+
+
+class SlideshowPickerBase(FilePickerBase):
+    field = 'images'
+    link_headers = ['Slideshow',]
+
+    def append(self, obj):
+        json = super(SlideshowPickerBase, self).append(obj)
+
+        try:
+            first_image = obj.images.all()[0]
+        except Exception, e:
+            first_image = None
+
+        try:
+            thumb = get_thumbnail(first_image.file, settings.THUMBNAIL_SIZE)
+            thumb_formatted = '<img src=\'%s\'>' % thumb.url
+        except ThumbnailError, e:
+            logger.exception(e)
+            thumb = None
+            thumb_formatted = settings.NOT_FOUND_STRING
+
+        slideshow_tag = '%sslideshow:%d%s' % (settings.MODULE_TAG_BEGINS_WITH,\
+                                              obj.pk,\
+                                              settings.MODULE_TAG_ENDS_WITH)
+
+        # generate the insert link
+        json['link_content'] = [thumb_formatted,]
+        json['insert'] = [slideshow_tag,]
 
         return json
 

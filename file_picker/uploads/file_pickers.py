@@ -2,6 +2,8 @@ from django import forms
 from django.core.files.base import ContentFile
 
 import file_picker
+from file_picker.exceptions import EmbedlyException
+from file_picker.utils import get_embed_object
 from file_picker.uploads.models import File, Image, Audio, Video
 
 
@@ -61,16 +63,38 @@ class VideoForm(forms.ModelForm):
 
     class Meta(object):
         model = Video
-        fields = ('name', 'description', 'caption', 'poster', 'youtube_url',)
+        fields = ('name', 'description', 'caption', 'poster', 'embed_url',)
+
+    def clean(self):
+        cleaned_data = super(VideoForm, self).clean()
+
+        file = cleaned_data.get('file')
+        embed_url = cleaned_data.get('embed_url')
+
+        if not file and not embed_url:
+            raise forms.ValidationError("You must upload a file or provide an embed URL")
+
+        if embed_url:
+            try:
+                cleaned_data['embed_object'] = get_embed_object(embed_url)
+            except EmbedlyException, e:
+                raise forms.ValidationError(str(e))
+
+        return cleaned_data
 
     def save(self, commit=True):
-        form = super(VideoForm, self).save(commit=False)
+        video = super(VideoForm, self).save(commit=False)
+        video.embed_object = self.cleaned_data['embed_object']
         file_path = self.cleaned_data['file']
-        fh = ContentFile(open(self.cleaned_data['file'], 'r').read())
-        form.file.save(file_path, fh)
+
+        if file_path and file_path != 'none':
+            fh = ContentFile(open(self.cleaned_data['file'], 'r').read())
+            video.file.save(file_path, fh)
+
         if commit:
-            form.save()
-        return form
+            video.save()
+
+        return video
 
 
 class FilePicker(file_picker.FilePickerBase):
@@ -93,8 +117,8 @@ class AudioPicker(file_picker.AudioPickerBase):
 
 class VideoPicker(file_picker.VideoPickerBase):
     form = VideoForm
-    columns = ('name', 'file_type', 'youtube_url', 'date_modified',)
-    extra_headers = ('Name', 'File Type', 'YouTube URL', 'Date Modified',)
+    columns = ('name', 'file_type', 'embed_url', 'date_modified',)
+    extra_headers = ('Name', 'File Type', 'URL', 'Date Modified',)
 
 
 file_picker.site.register(File, FilePicker, name='files')

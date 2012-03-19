@@ -1,7 +1,7 @@
-VERSION = (0, 7, 6,)
+VERSION = (0, 8,)
 __version__ = '.'.join(map(str, VERSION))
 
-from file_picker.views import FilePickerBase, ImagePickerBase, AudioPickerBase, VideoPickerBase
+from file_picker.views import FilePickerBase, ImagePickerBase, AudioPickerBase, VideoPickerBase, SlideshowPickerBase
 from file_picker.sites import site, FilePickerSite
 from file_picker import widgets
 

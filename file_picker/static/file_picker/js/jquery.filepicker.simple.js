@@ -43,6 +43,9 @@ jQuery(document).ready(function($) {
             },
             onVideoClick: function(e, insert) {
                 insertAtCaret(el.id, insert);
+            },
+            onSlideshowClick: function(e, insert) {
+                insertAtCaret(el.id, insert);
             }
         }).insertBefore($(el));
 
@@ -96,6 +99,19 @@ jQuery(document).ready(function($) {
                 e.preventDefault();
                 conf = $(overlay).data('filePicker').getConf();
                 conf.url = pickers.video;
+                $(overlay).data('overlay').load();
+            }).prependTo(parent);
+        }
+
+        if (pickers.slideshow) {
+            anchor = $('<a>').text('Insert Slideshow').attr({
+                'name': 'filepicker-slideshow',
+                'title': 'Insert Slideshow',
+                'href': '#'
+            }).css('display', 'block').click(function(e) {
+                e.preventDefault();
+                conf = $(overlay).data('filePicker').getConf();
+                conf.url = pickers.slideshow;
                 $(overlay).data('overlay').load();
             }).prependTo(parent);
         }

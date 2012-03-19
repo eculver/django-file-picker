@@ -112,6 +112,7 @@
         .wym_skin_twopanels .wym_buttons li.wym_tools_audio_add a     { background: url(audio.png) no-repeat center center;}
         .wym_skin_twopanels .wym_buttons li.wym_tools_video_add a     { background: url(video.png) no-repeat center center;}
         .wym_skin_twopanels .wym_buttons li.wym_tools_youtube_add a   { background: url(youtube.png) no-repeat center center;}
+        .wym_skin_twopanels .wym_buttons li.wym_tools_slideshow_add a   { background: url(slideshow.png) no-repeat center center;}
 
 /*DECORATION*/
         .wym_skin_twopanels .wym_section h2             { background: #ddd; border: solid gray; border-width: 0 0 1px;}

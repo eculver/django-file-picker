@@ -1,10 +1,12 @@
-import os, datetime, mimetypes
+import os, json, datetime, mimetypes
+import file_picker.settings as settings
 
 from django.db import models
 from django.forms import ValidationError
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
+from embedly import Embedly
 from file_picker.parse import parse_types
 
 
@@ -18,8 +20,6 @@ class BaseMetaModel(models.Model):
                                    null=True, blank=True)
     modified_by = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_modified",
                                     null=True, blank=True)
-
-
 
     class Meta:
         abstract = True
@@ -75,5 +75,8 @@ class Audio(BaseFileModel):
 class Video(BaseFileModel):
     "Basic video model"
     file = models.FileField(upload_to='uploads/videos/', null=True, blank=True, verbose_name="H.264 encoded video", help_text=_("Must be encoded as H.264 to play back correctly"))
-    youtube_url = models.CharField(max_length=100, null=True, blank=True, verbose_name="YouTube embed URL", help_text=_("The YouTube embed URL. Ex. http://www.youtube.com/embed/cmVLYaxHnPA"))
+    embed_url = models.CharField(max_length=100, null=True, blank=True, verbose_name="URL", help_text=_("The URL where the media is located. Ex. http://www.youtube.com/watch?v=YRQ49oX9ugU"))
+    embed_object = models.TextField(null=True, blank=True)
     poster = models.ForeignKey(Image)
+
+

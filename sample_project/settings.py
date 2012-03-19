@@ -73,6 +73,10 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'ki&&#oatj)5&+roxg3&(#$4%^srdh3zaayq9yoa(0_@&ge=3m+'
 
+# Embedly key
+FILE_PICKER_EMBEDLY_KEY = '<INSERT EMBEDLY KEY HERE>'
+FILE_PICKER_EMBED_MAX_WIDTH = '1170'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
@@ -84,6 +88,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+    'sample_project.contrib.context_processors.default',
 )
 
 ROOT_URLCONF = 'sample_project.urls'
@@ -102,10 +114,12 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.staticfiles',
+    'sorl.thumbnail',
+    'south',
     'file_picker',
     'file_picker.uploads',
+    'file_picker.slideshows',
     'file_picker.wymeditor',
-    'sorl.thumbnail',
     'sample_project.article',
 )
 

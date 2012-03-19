@@ -1,6 +1,9 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 
 import file_picker
 
@@ -19,9 +22,11 @@ urlpatterns = patterns('',
 
     (r'^%s(?P<path>.*)' % settings.MEDIA_URL.lstrip('/'),
      'django.views.static.serve',
-     {'document_root': settings.MEDIA_ROOT, 'show_indexes': True})
-)
+     {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
 
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+    (r'', include('sample_project.article.urls')),
+
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 urlpatterns += staticfiles_urlpatterns()
 
