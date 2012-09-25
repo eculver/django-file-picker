@@ -7,7 +7,6 @@ from django import template
 from django.core.exceptions import ImproperlyConfigured
 from file_picker.exceptions import EmbedlyException
 from file_picker.parse import parse_types
-from file_picker.settings import NOT_FOUND_STRING, MEDIA_URL
 
 def render_upload(obj, template_path="file_picker/render/", **options):
     """
@@ -25,7 +24,7 @@ def render_upload(obj, template_path="file_picker/render/", **options):
 
     """
     if obj is None or obj.file is None:
-        return NOT_FOUND_STRING
+        return settings.NOT_FOUND_STRING
 
     template_name = options.pop('as', None)
 
@@ -43,7 +42,7 @@ def render_upload(obj, template_path="file_picker/render/", **options):
         ["%s.html" % join(template_path, p) for p in templates])
 
     return tpl.render(template.Context({'obj': obj,
-                                        'media_url': MEDIA_URL,
+                                        'media_url': settings.MEDIA_URL,
                                         'options': options}))
 
 def render_youtube(obj, template_path="file_picker/render/", **options):
@@ -74,6 +73,7 @@ def get_embed_object(url):
         resp = client.oembed(url, maxwidth=settings.EMBED_MAX_WIDTH, maxheight=settings.EMBED_MAX_HEIGHT)
     except Exception, e:
         raise EmbedlyException("There was an issue with your embed URL. Please check that it is valid and try again")
+
 
     if resp.error:
         raise EmbedlyException("There was an issue looking up your embed URL: %s:%s" % (resp.error_code, resp.error_message))
